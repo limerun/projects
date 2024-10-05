@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>survey form</title>
+    <link href="styles.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <div class='header'>
+      <h1 id='title'>Survey Form</h1>
+      <p id="description">This is a survey form</p>
+    </div>
+    <div class='main'>
+      <form id="survey-form" method="get" action='https://register-demo.freecodecamp.org'>
+        <label id='name-label'><p>Enter your name:</p><input id='name' type='text' required placeholder="Name"></label>
+        <label id='email-label'><p>Enter your email:</p><input id='email' type='email' required placeholder="Email"></label>
+        <label id = 'number-label'><p>Enter your age(optional):</p><input id='number' type='number' min='13' max='120' placeholder="Age"></label>
+        <label><p>How did you hear about us?</p>
+          <select id='dropdown'>
+            <option disabled selected value>Select an option</option>
+            <option>Friends/family</option>
+            <option>Youtube</option>
+            <option>Tiktok</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <p>Do you like our product?</p>
+        <div class='radio'>
+          <label>
+            <input type='radio' name='radio' value='1'> Yes
+          </label>
+          <label>
+            <input type='radio' name='radio' value='2'> No
+          </label>
+          <label>
+            <input type='radio' name='radio' value='3'> Not sure
+          </label>
+        </div>
+        <p>What features do you want us to add?</p>
+        <div class='checkbox'>
+          <label>
+            <input type='checkbox' value='1'> Not sure
+          </label>
+          <label>
+            <input type='checkbox' value='2'> Not sure
+          </label>
+          <label>
+            <input type='checkbox' value='3'> Not sure
+          </label>
+        </div>
+        <label><p>Leave a comment!</p><textarea placeholder="Write anything you want"></textarea></label>
+        <input type="submit" value="Submit" id='submit'>
+      </form>
+    </div>
+  </body>
+</html>
