@@ -1,77 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8"/>
     <title>Product Landing Page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="./styles.css">
-  </head>
-  <body>
-    <header id="header">
-      <img id="header-img" src="https://upload.wikimedia.org/wikipedia/commons/2/24/Adidas_logo.png">
-      <nav id="nav-bar">
+</head>
+<body>
+<header id="header">
+    <img id="header-img" src="https://upload.wikimedia.org/wikipedia/commons/2/24/Adidas_logo.png">
+    <nav id="nav-bar">
         <a class="nav-link" href="#catalog-grid">Catalog</a>
         <a class="nav-link" href="#shipping">Shipping</a>
         <a class="nav-link" href="#about-us">About us</a>
-      </nav>
-    </header>
-    <main>
-      <div class="iframe-video">
-        <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/FzaS0V_FCrI?si=bmc_JH9KrLgV4iSt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen id="video"></iframe>
-      </div>
-      <form id="form" action="https://www.freecodecamp.com/email-submit">
+    </nav>
+</header>
+<main>
+    <div class="iframe-video row">
+        <iframe src="https://www.youtube-nocookie.com/embed/FzaS0V_FCrI?si=bmc_JH9KrLgV4iSt"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen id="video"></iframe>
+    </div>
+    <form id="form" action="https://www.freecodecamp.com/email-submit" class="row">
         <label for="email">Enter your email:</label>
         <input id="email" name="email" placeholder="Email" type="email">
         <input id="submit" type="submit" value="SUBMIT">
-      </form>
-        <div id="catalog-grid" class="catalog-grid">
-          <div class="product">
-            <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/3615ac17b8d2439fa1a5ac44013129ef_9366/Essentials_3-Stripes_Pants_Black_GM5542_21_model.jpg" width="250px">
+    </form>
+    <div id="catalog-grid" class="catalog-grid row">
+        <div class="product">
+            <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/3615ac17b8d2439fa1a5ac44013129ef_9366/Essentials_3-Stripes_Pants_Black_GM5542_21_model.jpg"
+                 width="250px">
             <span class="product-info">Adidas pants 30$</span>
-          </div>
-          <div class="product">
-            <img src="https://assets.adidas.com/images/w_600,f_auto,q_auto/4e894c2b76dd4c8e9013aafc016047af_9366/Superstar_Shoes_White_FV3284_01_standard.jpg" width="250px">
-            <span class="product-info">Adidas sneakers 50$</span>
-          </div>
-          <div class="product">
-            <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/4feb20f4d990407cb4f1a88a0040b212_9366/Relaxed_Strap-Back_Hat_Black_BH7137_01_standard.jpg" width="250px">
-            <span class="product-info">Adidas cap 20$</span>
-          </div>
-          <div class="product">
-            <img src="https://assets.adidas.com/images/w_600,f_auto,q_auto/5794cc05d5214d5e888a2077e12e6cc1_9366/Tee_Black_IM1909_21_model.jpg" width="250px">
-            <span class="product-info">Adidas T-Shirt 30$</span>
-          </div>
-          <div class="product">
-            <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/cf8ecee03b85471da973afd000e14d30_9366/Adicolor_Classics_Trefoil_Hoodie_Black_IM4489_21_model.jpg" width="250px">
-            <span class="product-info">Adidas hoodie 40$</span>
-          </div>
-          <div class="product">
-            <img src="https://assets.adidas.com/images/w_1880,f_auto,q_auto/3d7c3acb7eb2450d8031af10009c4209_9366/HT3452_03_standard.jpg" width="250px">
-            <span class="product-info">Adidas socks 10$</span>
-          </div>
         </div>
-          <section id="shipping">
-            <div class="shipping-type">
-              <span class="shipping-name">Pick-up at store</span>
-              <p>Price: free</p>
-              <button class="button">SELECT</button>
-            </div>
-            <div class="shipping-type">
-              <span class="shipping-name">Delivery to pick-up point</span>
-              <p>Price: 5$</p>
-              <button class="button">SELECT</button>
-            </div>
-            <div class="shipping-type">
-              <span class="shipping-name">Home delivery</span>
-              <p>Price: 10$</p>
-              <button class="button">SELECT</button>
-            </div>
-          </section>
-          <section id="about-us">
-            <p>Adidas AG is a German athletic apparel and footwear corporation headquartered in Herzogenaurach, Bavaria, Germany. It is the largest sportswear manufacturer in Europe, and the second largest in the world, after Nike. It is the holding company for the Adidas Group, which also owns an 8.33% stake of the football club Bayern München, and Runtastic, an Austrian fitness technology company. Adidas's revenue for 2018 was listed at €21.915 billion.</p>
-            <p>The company was started by Adolf Dassler in his mother's house. He was joined by his elder brother Rudolf in 1924 under the name Gebrüder Dassler Schuhfabrik ("Dassler Brothers Shoe Factory"). Dassler assisted in the development of spiked running shoes (spikes) for multiple athletic events. To enhance the quality of spiked athletic footwear, he transitioned from a previous model of heavy metal spikes to utilising canvas and rubber. Dassler persuaded U.S. sprinter Jesse Owens to use his handmade spikes at the 1936 Summer Olympics. In 1949, following a breakdown in the relationship between the brothers, Adolf created Adidas and Rudolf established Puma, which became Adidas's business rival.</p>
-            <p>The three stripes are Adidas's identity mark, having been used on the company's clothing and shoe designs as a marketing aid. The branding, which Adidas bought in 1952 from Finnish sports company Karhu Sports for the equivalent of €1,600 and two bottles of whiskey,[8][9] became so successful that Dassler described Adidas as "The three stripes company".</p>
-          </section>
-    </main>
-  </body>
+        <div class="product">
+            <img src="https://assets.adidas.com/images/w_600,f_auto,q_auto/4e894c2b76dd4c8e9013aafc016047af_9366/Superstar_Shoes_White_FV3284_01_standard.jpg"
+                 width="250px">
+            <span class="product-info">Adidas sneakers 50$</span>
+        </div>
+        <div class="product">
+            <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/4feb20f4d990407cb4f1a88a0040b212_9366/Relaxed_Strap-Back_Hat_Black_BH7137_01_standard.jpg"
+                 width="250px">
+            <span class="product-info">Adidas cap 20$</span>
+        </div>
+        <div class="product">
+            <img src="https://assets.adidas.com/images/w_600,f_auto,q_auto/5794cc05d5214d5e888a2077e12e6cc1_9366/Tee_Black_IM1909_21_model.jpg"
+                 width="250px">
+            <span class="product-info">Adidas T-Shirt 30$</span>
+        </div>
+        <div class="product">
+            <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/cf8ecee03b85471da973afd000e14d30_9366/Adicolor_Classics_Trefoil_Hoodie_Black_IM4489_21_model.jpg"
+                 width="250px">
+            <span class="product-info">Adidas hoodie 40$</span>
+        </div>
+        <div class="product">
+            <img src="https://assets.adidas.com/images/w_1880,f_auto,q_auto/3d7c3acb7eb2450d8031af10009c4209_9366/HT3452_03_standard.jpg"
+                 width="250px">
+            <span class="product-info">Adidas socks 10$</span>
+        </div>
+    </div>
+    <section id="shipping" class="row">
+        <div class="shipping-type">
+            <span class="shipping-name">Pick-up at store</span>
+            <p>Price: free</p>
+            <button class="button">SELECT</button>
+        </div>
+        <div class="shipping-type">
+            <span class="shipping-name">Delivery to pick-up point</span>
+            <p>Price: 5$</p>
+            <button class="button">SELECT</button>
+        </div>
+        <div class="shipping-type">
+            <span class="shipping-name">Home delivery</span>
+            <p>Price: 10$</p>
+            <button class="button">SELECT</button>
+        </div>
+    </section>
+    <section id="about-us" class="row">
+        <p>Adidas AG is a German athletic apparel and footwear corporation headquartered in Herzogenaurach, Bavaria,
+            Germany. It is the largest sportswear manufacturer in Europe, and the second largest in the world, after
+            Nike. It is the holding company for the Adidas Group, which also owns an 8.33% stake of the football club
+            Bayern München, and Runtastic, an Austrian fitness technology company. Adidas's revenue for 2018 was listed
+            at €21.915 billion.</p>
+        <p>The company was started by Adolf Dassler in his mother's house. He was joined by his elder brother Rudolf in
+            1924 under the name Gebrüder Dassler Schuhfabrik ("Dassler Brothers Shoe Factory"). Dassler assisted in the
+            development of spiked running shoes (spikes) for multiple athletic events. To enhance the quality of spiked
+            athletic footwear, he transitioned from a previous model of heavy metal spikes to utilising canvas and
+            rubber. Dassler persuaded U.S. sprinter Jesse Owens to use his handmade spikes at the 1936 Summer Olympics.
+            In 1949, following a breakdown in the relationship between the brothers, Adolf created Adidas and Rudolf
+            established Puma, which became Adidas's business rival.</p>
+        <p>The three stripes are Adidas's identity mark, having been used on the company's clothing and shoe designs as
+            a marketing aid. The branding, which Adidas bought in 1952 from Finnish sports company Karhu Sports for the
+            equivalent of €1,600 and two bottles of whiskey,[8][9] became so successful that Dassler described Adidas as
+            "The three stripes company".</p>
+    </section>
+</main>
+</body>
 </html>
