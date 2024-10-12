@@ -11,6 +11,10 @@
  body{
     margin: 0;
  }
+ a{
+    text-decoration: none;
+    color: black;
+ }
  #navbar{
     position: fixed;
     top: 0;
@@ -18,7 +22,7 @@
     background-color: rgb(255, 255, 255, 0.95);
     height: 50px;
  }
- #navbar-list{
+ .navbar__list{
    display: flex;
    justify-content: center;
    align-items: center;
@@ -26,11 +30,7 @@
    list-style: none;
    padding: 0;
  }
- a{
-    text-decoration: none;
-    color: black;
- }
- #navbar a{
+ .navbar__list__link{
     font-size: var(--font-size-s);
  }
  main{
@@ -44,11 +44,11 @@
     height: 400px;
     font-size: var(--font-size-m);
  }
- #projects h2{
+ .projects__h2{
     text-align: center;
     font-size: var(--font-size-sm);
  }
- #projects-grid{
+ .projects__flexbox{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -56,10 +56,10 @@
     gap: var(--distance);
     margin-top: var(--distance);
  }
- #projects-grid img{
+ .projects__flexbox__card__img{
     width: 700px;
  }
- #projects-grid span{
+ .projects__flexbox__card__span{
    width: 100%;
    height: 40px;
    background-color: rgb(230, 229, 229);
@@ -67,7 +67,7 @@
    justify-content: center;
    align-items: center;
  }
- .project-title a {
+ .projects__flexbox__card {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -82,12 +82,12 @@
    height: 300px;
    font-size: var(--font-size-m);
  }
- #links{
+ .contacts__links{
    display: flex;
    gap: 5rem;
  }
  @media (max-width:1382px) {
-   #projects-grid img{
+   .projects__flexbox img{
       width: 460px;
    }
    #contacts{
