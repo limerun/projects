@@ -5,6 +5,9 @@
    --font-size-m: 1.75rem;
    --distance: 3.125rem;
  }
+ *{
+   box-sizing: border-box;
+ }
  body{
     margin: 0;
  }
@@ -12,12 +15,16 @@
     position: fixed;
     top: 0;
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15vw;
     background-color: rgb(255, 255, 255, 0.95);
     height: 50px;
+ }
+ #navbar-list{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   gap: 15vw;
+   list-style: none;
+   padding: 0;
  }
  a{
     text-decoration: none;

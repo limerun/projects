@@ -9,27 +9,29 @@
   </head>
   <body>
     <nav id="navbar">
-      <a href="#welcome-section">About</a>
-      <a href="#projects">Projects</a>
-      <a href="#contacts">Contacts</a>
+      <ul id="navbar-list">
+        <li><a href="#welcome-section">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contacts">Contacts</a></li>
+      </ul>
     </nav>
     <main>
-      <section id="welcome-section">
+      <section id="welcome-section" role="region" aria-labelledby="greeting">
         <h1>Hi, I'm Misha</h1>
         <p>Here is my personal portfolio</p>
       </section>
-      <section id="projects">
+      <section id="projects" role="region" aria-labelledby="list-of-projects">
         <h2>Here are some of my projects</h2>
         <div id="projects-grid">
           <div class="project-title project1">
             <a href="https://github.com/limerun/projects/tree/main/freecodecamp/product-landing-page" target="_blank">
-              <img src="product-landing-page.png" alt="Survey form" >
+              <img src="product-landing-page.png" alt="Product landing page" >
               <span>Product landing page</span>
             </a>
           </div>
           <div class="project-title poroject2">
             <a href="https://github.com/limerun/projects/tree/main/freecodecamp/techdoc" target="_blank">
-              <img src="techdoc.png" alt="Survey form" >
+              <img src="techdoc.png" alt="Technical documentation page" >
               <span>Technical documentation page</span>
             </a>
           </div>
@@ -41,7 +43,7 @@
           </div>
         </div>
       </section>
-      <section id="contacts">
+      <section id="contacts" role="region" aria-labelledby="list-of-contacts">
         <h2>Let's keep in touch</h2>
         <div id="links">
           <a href="https://github.com/limerun" id="profile-link" target="_blank" class="link">
