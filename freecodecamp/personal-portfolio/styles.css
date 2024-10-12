@@ -1,3 +1,9 @@
+:root{
+   --font-size-xs: 20px;
+   --font-size-s: 22px;
+   --font-size-sm: 26px;
+   --font-size-m: 28px;
+ }
  body{
     margin: 0;
  }
