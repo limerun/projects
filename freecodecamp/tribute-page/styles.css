@@ -1,0 +1,59 @@
+:root {
+    --color1: rgb(233, 233, 233);
+    --font-size-l: 2rem;
+    --font-size-ml: 1.5rem;
+    --font-size-m: 1.25rem;
+    --font-size-s: 1.2rem;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    text-align: center;
+}
+
+a {
+    color: black;
+}
+
+p {
+    font-size: var(--font-size-m);
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color1);
+}
+
+.welcome-section {
+    height: 200px;
+}
+
+h1 {
+    font-size: var(--font-size-l);
+}
+
+.figure-container__image {
+    display: block;
+    max-width: 100%;
+    margin: auto;
+}
+
+figcaption {
+    font-size: var(--font-size-s);
+}
+
+.biography {
+    padding-right: 15vw;
+    padding-left: 15vw;
+}
+
+h3 {
+    font-size: var(--font-size-ml);
+}
