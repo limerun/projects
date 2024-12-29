@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-do app </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body>
+    <main class="h-screen flex items-center justify-center bg-gray-100">
+        <div class="flex max-w-6xl w-4/5 h-2/3 bg-white rounded-xl items-center justify-evenly">
+            <div class="w-2/5 h-5/6 bg-gray-100 rounded-xl p-4">
+                <h2 class="text-2xl">My Tasks</h2>
+                <input type="text" placeholder="Search" class="w-full rounded-lg h-9 mt-5 border border-gray-400">
+            </div>
+            <div class="w-2/5 h-5/6 bg-gray-100 rounded-xl p-4">
+                <h2 class="text-2xl">New Task</h2>
+                <form class="flex flex-col gap-6 mt-5">
+                    <label for="title-input">Title:
+                        <input required type="text" id="title-input" class="w-full rounded-lg h-9 border border-gray-400">
+                    </label>
+                    <label for="description-input">Description:
+                        <textarea id="description-input" class="w-full rounded-lg border border-gray-400 h-32"></textarea>
+                    </label>
+                    <label for="deadline-input">Deadline:
+                        <input type="date" id="deadline-input" class="w-full rounded-lg h-9 border border-gray-400">
+                    </label>
+                    <button type="submit" class="rounded-lg bg-blue-500 h-9">Add New Task</button>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
