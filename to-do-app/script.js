@@ -7,8 +7,7 @@ const taskForm = document.getElementById("task-form");
 const deleteBtn = document.getElementById("delete-btn");
 const newTask = document.getElementById("new-task");
 const tasksArr = [];
-taskForm.addEventListener("submit", (e) => {
-    e.preventDefault();
+function upgradeTasks(){
     tasksContainer.innerHTML += `
     <div class="bg-white rounded-xl border border-gray-200 p-2 shadow-lg relative bg" id="${Date.now()}">
         <p class="absolute right-1 top-1 text-xs hidden">Done</p>
@@ -21,6 +20,11 @@ taskForm.addEventListener("submit", (e) => {
             <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg" onclick="doneTask(this)">Done</button>
         </div>
     </div>`;
+}
+const upgradeTasksCopy = upgradeTasks;
+taskForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    upgradeTasks();
 });
 function deleteTask(buttonEl) {
     buttonEl.parentElement.parentElement.remove();
@@ -34,15 +38,25 @@ function doneTask(buttonEl) {
 }
 function editTask(buttonEl) {
     newTask.innerText = "Edit Task";
-    taskBtn.innerText = "Edit Task"
+    taskBtn.innerText = "Edit Task";
     const taskContainer = buttonEl.parentElement.parentElement;
     titleInput.value = taskContainer.querySelector("#title-h2").innerText;
     descriptionInput.value = taskContainer.querySelector("#description-p").innerText;
     deadlineInput.value = taskContainer.querySelector("#deadline-p").innerText;
     buttonEl.classList.toggle("bg-gray-100");
     buttonEl.classList.toggle("text-black");
-    taskForm.addEventListener("submit", (e) => {
-        e.preventDefault();
+    // taskForm.addEventListener("submit", (e) => {
+    //     e.preventDefault();
+    //     taskContainer.querySelector("#title-h2").innerText = titleInput.value;
+    // });
+    upgradeTasks = function(){
         taskContainer.querySelector("#title-h2").innerText = titleInput.value;
-    });
+        taskContainer.querySelector("#description-p").innerText = descriptionInput.value;
+        taskContainer.querySelector("#deadline-p").innerText = deadlineInput.value;
+        buttonEl.classList.toggle("bg-gray-100");
+        buttonEl.classList.toggle("text-black");
+        upgradeTasks = upgradeTasksCopy;
+        newTask.innerText = "New Task";
+        taskBtn.innerText = "Add New Task";
+    }
 }
