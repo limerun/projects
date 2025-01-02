@@ -1,33 +1,44 @@
+"use strict";
 const titleInput = document.getElementById("title-input");
 const descriptionInput = document.getElementById("description-input");
 const deadlineInput = document.getElementById("deadline-input");
 const taskBtn = document.getElementById("task-button");
 const tasksContainer = document.getElementById("tasks-container");
 const taskForm = document.getElementById("task-form");
-const deleteBtn = document.getElementById("delete-btn");
 const newTask = document.getElementById("new-task");
 const tasksArr = [];
-function upgradeTasks(){
-    tasksContainer.innerHTML += `
-    <div class="bg-white rounded-xl border border-gray-200 p-2 shadow-lg relative bg" id="${Date.now()}">
+function addTask() {
+    tasksArr.unshift({
+        id: `task-${Date.now()}`,
+        title: titleInput.value,
+        description: descriptionInput.value,
+        deadline: deadlineInput.value
+    });
+}
+function renderTasks() {
+    tasksContainer.innerHTML = ``;
+    tasksArr.forEach((item) => {
+        tasksContainer.innerHTML += `
+    <div class="bg-white rounded-xl border border-gray-200 p-2 shadow-lg relative bg" id="${item.id}">
         <p class="absolute right-1 top-1 text-xs hidden">Done</p>
-        <h2 class="text-xl pr-6 break-words" id="title-h2">${titleInput.value}</h2>
-        <p class="mt-1 break-words" id="description-p">${descriptionInput.value}</p>
-        <p class="mt-1 break-words" id="deadline-p">${deadlineInput.value}</p>
+        <h2 class="text-xl pr-6 break-words title-task">${item.title}</h2>
+        <p class="mt-1 break-words description">${item.description}</p>
+        <p class="mt-1 break-words deadline">${item.deadline}</p>
         <div class="flex justify-evenly mt-2">
-            <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg" id="delete-btn" onclick="deleteTask(this)">Delete</button>
+            <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg" onclick="deleteTask(this)">Delete</button>
             <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg" onclick="editTask(this)">Edit</button>
             <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg" onclick="doneTask(this)">Done</button>
         </div>
     </div>`;
+    });
+    titleInput.value = '';
+    descriptionInput.value = '';
+    deadlineInput.value = '';
 }
-const upgradeTasksCopy = upgradeTasks;
-taskForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    upgradeTasks();
-});
 function deleteTask(buttonEl) {
-    buttonEl.parentElement.parentElement.remove();
+    let deleteTaskIndex = tasksArr.findIndex(item => item.id === buttonEl.parentElement.parentElement.id);
+    tasksArr.splice(deleteTaskIndex, 1);
+    renderTasks();
 }
 function doneTask(buttonEl) {
     const taskContainer = buttonEl.parentElement.parentElement;
@@ -37,26 +48,35 @@ function doneTask(buttonEl) {
     buttonEl.innerText = (buttonEl.innerText === "Done") ? "Not Done" : "Done";
 }
 function editTask(buttonEl) {
-    newTask.innerText = "Edit Task";
-    taskBtn.innerText = "Edit Task";
-    const taskContainer = buttonEl.parentElement.parentElement;
-    titleInput.value = taskContainer.querySelector("#title-h2").innerText;
-    descriptionInput.value = taskContainer.querySelector("#description-p").innerText;
-    deadlineInput.value = taskContainer.querySelector("#deadline-p").innerText;
-    buttonEl.classList.toggle("bg-gray-100");
-    buttonEl.classList.toggle("text-black");
-    // taskForm.addEventListener("submit", (e) => {
-    //     e.preventDefault();
-    //     taskContainer.querySelector("#title-h2").innerText = titleInput.value;
-    // });
-    upgradeTasks = function(){
-        taskContainer.querySelector("#title-h2").innerText = titleInput.value;
-        taskContainer.querySelector("#description-p").innerText = descriptionInput.value;
-        taskContainer.querySelector("#deadline-p").innerText = deadlineInput.value;
-        buttonEl.classList.toggle("bg-gray-100");
-        buttonEl.classList.toggle("text-black");
-        upgradeTasks = upgradeTasksCopy;
-        newTask.innerText = "New Task";
-        taskBtn.innerText = "Add New Task";
-    }
+    const task = buttonEl.parentElement.parentElement;
+    const taskButtons = buttonEl.parentElement;
+    const taskTitle = task.querySelector(".title-task");
+    const taskDescription = task.querySelector(".description");
+    const taskDeadline = task.querySelector(".deadline");
+    taskTitle.innerHTML = `<input type="text" class = "w-full rounded-lg border border-gray-200 shadow-lg p-1" value="${taskTitle.innerText}">`;
+    taskDescription.innerHTML = `<textarea class="w-full rounded-lg border border-gray-200 shadow-lg p-1">${taskDescription.innerText}</textarea>`;
+    taskDeadline.innerHTML = `<input type="date" class="w-full rounded-lg border border-gray-200 shadow-lg p-1" value="${taskDeadline.innerText}">`;
+    taskTitle.children[0].focus();
+    taskButtons.innerHTML = `
+            <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg" onclick="renderTasks()">Cancel</button>
+            <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg" onclick="doneEditing(this)">Edit</button>
+    `;
 }
+function doneEditing(buttonEl) {
+    const task = buttonEl.parentElement.parentElement;
+    let editedTaskIndex = tasksArr.findIndex(item => item.id === task.id);
+    const taskTitle = task.querySelector(".title-task");
+    const taskDescription = task.querySelector(".description");
+    const taskDeadline = task.querySelector(".deadline");
+    tasksArr[editedTaskIndex].title = taskTitle.children[0].value;
+    tasksArr[editedTaskIndex].description = taskDescription.children[0].value;
+    tasksArr[editedTaskIndex].deadline = taskDeadline.children[0].value;
+    renderTasks();
+}
+taskForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    addTask();
+    renderTasks();
+});
+
+

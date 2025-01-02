@@ -15,8 +15,8 @@
             <div class="w-2/5 h-5/6 bg-gray-100 rounded-xl p-4 shadow-lg">
                 <h1 class="text-2xl">My Tasks</h1>
                 <input type="text" placeholder="Search"
-                    class="w-full rounded-lg h-9 mt-5 border border-gray-200 shadow-lg">
-                <div id="tasks-container" class="mt-5 max-h-80 overflow-y-auto flex flex-col-reverse gap-2 rounded-xl">
+                    class="w-full rounded-lg h-9 mt-5 border border-gray-200 shadow-lg p-1">
+                <div id="tasks-container" class="mt-5 max-h-80 overflow-y-auto flex flex-col gap-2 rounded-xl">
                 </div>
             </div>
             <div class="w-2/5 h-5/6 bg-gray-100 rounded-xl p-4 shadow-lg">
@@ -24,15 +24,15 @@
                 <form class="flex flex-col gap-6 mt-5" id="task-form">
                     <label for="title-input">Title:
                         <input required type="text" id="title-input"
-                            class="w-full rounded-lg h-9 border border-gray-200 shadow-lg">
+                            class="w-full rounded-lg h-9 border border-gray-200 shadow-lg p-1">
                     </label>
                     <label for="description-input">Description:
                         <textarea id="description-input"
-                            class="w-full rounded-lg border border-gray-200 h-32 max-h-32 shadow-lg"></textarea>
+                            class="w-full rounded-lg border border-gray-200 h-32 max-h-32 shadow-lg p-1"></textarea>
                     </label>
                     <label for="deadline-input">Deadline:
                         <input type="date" id="deadline-input"
-                            class="w-full rounded-lg h-9 border border-gray-200 shadow-lg">
+                            class="w-full rounded-lg h-9 border border-gray-200 shadow-lg p-1">
                     </label>
                     <button type="submit" id="task-button" class="rounded-lg bg-blue-500 h-9 text-white shadow-lg">Add
                         New Task</button>
