@@ -6,8 +6,13 @@ const taskBtn = document.getElementById("task-button");
 const tasksContainer = document.getElementById("tasks-container");
 const taskForm = document.getElementById("task-form");
 const newTask = document.getElementById("new-task");
+const clearBtn = document.getElementById("clear-button");
 const tasksArr = [];
 function addTask() {
+    if (titleInput.value.trim() === "") {
+        alert("Enter a title");
+        return;
+    }
     tasksArr.unshift({
         id: `task-${Date.now()}`,
         title: titleInput.value,
@@ -78,5 +83,7 @@ taskForm.addEventListener("submit", (e) => {
     addTask();
     renderTasks();
 });
-
-
+clearBtn.addEventListener("click", () => {
+    tasksArr.length = 0;
+    renderTasks();
+});

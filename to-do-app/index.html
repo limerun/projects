@@ -12,8 +12,10 @@
 <body>
     <main class="h-screen flex items-center justify-center bg-gray-100">
         <div class="flex max-w-6xl w-4/5 h-2/3 bg-white rounded-xl items-center justify-evenly shadow-lg">
-            <div class="w-2/5 h-5/6 bg-gray-100 rounded-xl p-4 shadow-lg">
+            <div class="w-2/5 h-5/6 bg-gray-100 rounded-xl p-4 shadow-lg relative">
                 <h1 class="text-2xl">My Tasks</h1>
+                <button id="clear-button"
+                    class="rounded-lg bg-blue-500 h-9 text-white shadow-lg w-14 absolute top-4 right-4">Clear</button>
                 <input type="text" placeholder="Search"
                     class="w-full rounded-lg h-9 mt-5 border border-gray-200 shadow-lg p-1">
                 <div id="tasks-container" class="mt-5 max-h-80 overflow-y-auto flex flex-col gap-2 rounded-xl">
