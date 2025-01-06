@@ -7,6 +7,8 @@ const tasksContainer = document.getElementById("tasks-container");
 const taskForm = document.getElementById("task-form");
 const newTask = document.getElementById("new-task");
 const clearBtn = document.getElementById("clear-button");
+const searchInput = document.getElementById("search-input");
+const searchBtn = document.getElementById("search-button");
 const tasksArr = [];
 function addTask() {
     if (titleInput.value.trim() === "") {
@@ -20,9 +22,9 @@ function addTask() {
         deadline: deadlineInput.value
     });
 }
-function renderTasks() {
+function renderTasks(arr) {
     tasksContainer.innerHTML = ``;
-    tasksArr.forEach((item) => {
+    arr.forEach((item) => {
         tasksContainer.innerHTML += `
     <div class="bg-white rounded-xl border border-gray-200 p-2 shadow-lg relative bg" id="${item.id}">
         <p class="absolute right-1 top-1 text-xs hidden">Done</p>
@@ -43,7 +45,7 @@ function renderTasks() {
 function deleteTask(buttonEl) {
     let deleteTaskIndex = tasksArr.findIndex(item => item.id === buttonEl.parentElement.parentElement.id);
     tasksArr.splice(deleteTaskIndex, 1);
-    renderTasks();
+    renderTasks(tasksArr);
 }
 function doneTask(buttonEl) {
     const taskContainer = buttonEl.parentElement.parentElement;
@@ -76,14 +78,22 @@ function doneEditing(buttonEl) {
     tasksArr[editedTaskIndex].title = taskTitle.children[0].value;
     tasksArr[editedTaskIndex].description = taskDescription.children[0].value;
     tasksArr[editedTaskIndex].deadline = taskDeadline.children[0].value;
-    renderTasks();
+    renderTasks(tasksArr);
 }
 taskForm.addEventListener("submit", (e) => {
     e.preventDefault();
     addTask();
-    renderTasks();
+    renderTasks(tasksArr);
 });
 clearBtn.addEventListener("click", () => {
     tasksArr.length = 0;
-    renderTasks();
+    renderTasks(tasksArr);
+});
+searchBtn.addEventListener("click", () => {
+    const filteredArr = tasksArr.filter(item => item.title.includes(searchInput.value));
+    if(filteredArr.length === 0){
+        tasksContainer.innerHTML = `<h2>Nothing found<h2>`;
+    }else{
+        renderTasks(filteredArr);
+    }
 });

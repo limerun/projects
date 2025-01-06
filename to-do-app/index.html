@@ -16,8 +16,18 @@
                 <h1 class="text-2xl">My Tasks</h1>
                 <button id="clear-button"
                     class="rounded-lg bg-blue-500 h-9 text-white shadow-lg w-14 absolute top-4 right-4">Clear</button>
-                <input type="text" placeholder="Search"
-                    class="w-full rounded-lg h-9 mt-5 border border-gray-200 shadow-lg p-1">
+                <div class="relative mt-5">
+                    <input id="search-input" type="text"
+                        class="w-full rounded-lg h-9 border border-gray-200 shadow-lg p-1">
+                    <button id="search-button"
+                        class="rounded-lg bg-blue-500 h-5 w-12 text-white shadow-lg text-xs absolute top-2 right-2">Search</button>
+                </div>
+
+                <select id="" class="w-full rounded-lg h-9 mt-5 border border-gray-200 shadow-lg">
+                    <option>Sort</option>
+                    <option>By title</option>
+                    <option>By deadline</option>
+                </select>
                 <div id="tasks-container" class="mt-5 max-h-80 overflow-y-auto flex flex-col gap-2 rounded-xl">
                 </div>
             </div>
