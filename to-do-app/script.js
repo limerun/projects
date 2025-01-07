@@ -26,9 +26,8 @@ function addTask() {
         isDone: false
     });
 }
-function renderTasks() {
+function renderTasks(arr) {
     tasksContainer.innerHTML = ``;
-    const arr = filteredArr ? filteredArr : tasksArr;
     arr.forEach((item) => {
         tasksContainer.innerHTML += `
     <div class="bg-white rounded-xl border border-gray-200 p-2 shadow-lg relative bg" id="${item.id}">
@@ -50,8 +49,7 @@ function renderTasks() {
 function deleteTask(buttonEl) {
     let deleteTaskIndex = tasksArr.findIndex(item => item.id === buttonEl.parentElement.parentElement.id);
     tasksArr.splice(deleteTaskIndex, 1);
-    filteredArr.splice(deleteTaskIndex, 1);
-    renderTasks();
+    renderTasks(tasksArr);
 }
 function doneTask(buttonEl) {
     const taskContainer = buttonEl.parentElement.parentElement;
@@ -71,7 +69,7 @@ function editTask(buttonEl) {
     taskDeadline.innerHTML = `<input type="date" class="w-full rounded-lg border border-gray-200 shadow-lg p-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="${taskDeadline.innerText}">`;
     taskTitle.children[0].focus();
     taskButtons.innerHTML = `
-            <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg" onclick="renderTasks()">Cancel</button>
+            <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg" onclick="renderTasks(filteredArr ? filteredArr : tasksArr)">Cancel</button>
             <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg" onclick="doneEditing(this)">Edit</button>
     `;
 }
@@ -84,29 +82,29 @@ function doneEditing(buttonEl) {
     tasksArr[editedTaskIndex].title = taskTitle.children[0].value;
     tasksArr[editedTaskIndex].description = taskDescription.children[0].value;
     tasksArr[editedTaskIndex].deadline = taskDeadline.children[0].value;
-    renderTasks();
+    renderTasks(tasksArr);
 }
 taskForm.addEventListener("submit", (e) => {
     e.preventDefault();
     addTask();
-    renderTasks();
+    renderTasks(tasksArr);
 });
 clearBtn.addEventListener("click", () => {
     tasksArr.length = 0;
     sortSelect.selectedIndex = 0;
     searchInput.value = '';
-    renderTasks();
+    renderTasks(tasksArr);
 });
 searchBtn.addEventListener("click", () => {
     filteredArr = tasksArr.filter(item => item.title.includes(searchInput.value) || item.description.includes(searchInput.value) || item.deadline.includes(searchInput.value));
     if (filteredArr.length === 0) {
         tasksContainer.innerHTML = `<h2>Nothing found<h2>`;
     } else {
-        renderTasks();
+        renderTasks(filteredArr);
     }
 });
 cancelSearchBtn.addEventListener("click", () => {
     searchInput.value = '';
     filteredArr.length = 0;
-    renderTasks();
+    renderTasks(tasksArr);
 });
