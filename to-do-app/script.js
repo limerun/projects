@@ -5,7 +5,6 @@ const deadlineInput = document.getElementById("deadline-input");
 const taskBtn = document.getElementById("task-button");
 const tasksContainer = document.getElementById("tasks-container");
 const taskForm = document.getElementById("task-form");
-const newTask = document.getElementById("new-task");
 const clearBtn = document.getElementById("clear-button");
 const searchInput = document.getElementById("search-input");
 const searchBtn = document.getElementById("search-button");
@@ -13,6 +12,9 @@ const sortSelect = document.getElementById("sort-select");
 const cancelSearchBtn = document.getElementById("cancel-search-button");
 const tasksArr = [];
 let filteredArr = [];
+function validation(inp) {
+    return inp.replace(/[<>]/g, '');
+}
 function addTask() {
     if (titleInput.value.trim() === "") {
         alert("Enter a title");
@@ -20,9 +22,9 @@ function addTask() {
     }
     tasksArr.unshift({
         id: `task-${Date.now()}`,
-        title: titleInput.value,
-        description: descriptionInput.value,
-        deadline: deadlineInput.value,
+        title: validation(titleInput.value),
+        description: validation(descriptionInput.value),
+        deadline: validation(deadlineInput.value),
         isDone: false
     });
 }
@@ -31,14 +33,14 @@ function renderTasks(arr) {
     arr.forEach((item) => {
         tasksContainer.innerHTML += `
     <div class="bg-white rounded-xl border border-gray-200 p-2 shadow-lg relative bg" id="${item.id}">
-        <p class="absolute right-1 top-1 text-xs hidden">Done</p>
+        <p class="absolute right-1 top-1 text-xs ${item.isDone ? "" : "hidden"}">Done</p>
         <h2 class="text-xl pr-6 break-words title-task">${item.title}</h2>
         <p class="mt-1 break-words description">${item.description}</p>
         <p class="mt-1 break-words deadline">${item.deadline}</p>
         <div class="flex justify-evenly mt-2">
             <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg" onclick="deleteTask(this)">Delete</button>
             <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg" onclick="editTask(this)">Edit</button>
-            <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg" onclick="doneTask(this)">Done</button>
+            <button class="rounded-lg ${item.isDone ? "bg-gray-100 text-black" : "bg-blue-500 text-white"} w-20 shadow-lg" onclick="doneTask(this)">${item.isDone ? "Not Done" : "Done"}</button>
         </div>
     </div>`;
     });
@@ -49,14 +51,15 @@ function renderTasks(arr) {
 function deleteTask(buttonEl) {
     let deleteTaskIndex = tasksArr.findIndex(item => item.id === buttonEl.parentElement.parentElement.id);
     tasksArr.splice(deleteTaskIndex, 1);
+    filteredArr.splice(deleteTaskIndex, 1);
+    searchInput.value = '';
     renderTasks(tasksArr);
 }
 function doneTask(buttonEl) {
-    const taskContainer = buttonEl.parentElement.parentElement;
-    taskContainer.querySelector("p.absolute").classList.toggle("hidden");
-    buttonEl.classList.toggle("bg-gray-100");
-    buttonEl.classList.toggle("text-black");
-    buttonEl.innerText = (buttonEl.innerText === "Done") ? "Not Done" : "Done";
+    const task = buttonEl.parentElement.parentElement;
+    let doneTaskIndex = tasksArr.findIndex(item => item.id === task.id);
+    tasksArr[doneTaskIndex].isDone = !tasksArr[doneTaskIndex].isDone;
+    renderTasks(filteredArr.length === 0 ? tasksArr : filteredArr);
 }
 function editTask(buttonEl) {
     const task = buttonEl.parentElement.parentElement;
@@ -69,7 +72,7 @@ function editTask(buttonEl) {
     taskDeadline.innerHTML = `<input type="date" class="w-full rounded-lg border border-gray-200 shadow-lg p-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="${taskDeadline.innerText}">`;
     taskTitle.children[0].focus();
     taskButtons.innerHTML = `
-            <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg" onclick="renderTasks(filteredArr ? filteredArr : tasksArr)">Cancel</button>
+            <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg" onclick="renderTasks(filteredArr.length === 0 ? tasksArr : filteredArr)">Cancel</button>
             <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg" onclick="doneEditing(this)">Edit</button>
     `;
 }
@@ -82,12 +85,13 @@ function doneEditing(buttonEl) {
     tasksArr[editedTaskIndex].title = taskTitle.children[0].value;
     tasksArr[editedTaskIndex].description = taskDescription.children[0].value;
     tasksArr[editedTaskIndex].deadline = taskDeadline.children[0].value;
-    renderTasks(tasksArr);
+    renderTasks(filteredArr.length === 0 ? tasksArr : filteredArr);
 }
 taskForm.addEventListener("submit", (e) => {
     e.preventDefault();
     addTask();
     renderTasks(tasksArr);
+    searchInput.value = '';
 });
 clearBtn.addEventListener("click", () => {
     tasksArr.length = 0;
@@ -96,9 +100,12 @@ clearBtn.addEventListener("click", () => {
     renderTasks(tasksArr);
 });
 searchBtn.addEventListener("click", () => {
-    filteredArr = tasksArr.filter(item => item.title.includes(searchInput.value) || item.description.includes(searchInput.value) || item.deadline.includes(searchInput.value));
+    filteredArr = tasksArr.filter(item =>
+        item.title.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+        item.description.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+        item.deadline.includes(searchInput.value));
     if (filteredArr.length === 0) {
-        tasksContainer.innerHTML = `<h2>Nothing found<h2>`;
+        tasksContainer.innerHTML = `<h2>Nothing found</h2>`;
     } else {
         renderTasks(filteredArr);
     }
