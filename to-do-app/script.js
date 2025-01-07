@@ -9,7 +9,10 @@ const newTask = document.getElementById("new-task");
 const clearBtn = document.getElementById("clear-button");
 const searchInput = document.getElementById("search-input");
 const searchBtn = document.getElementById("search-button");
+const sortSelect = document.getElementById("sort-select");
+const cancelSearchBtn = document.getElementById("cancel-search-button");
 const tasksArr = [];
+let filteredArr = [];
 function addTask() {
     if (titleInput.value.trim() === "") {
         alert("Enter a title");
@@ -19,11 +22,13 @@ function addTask() {
         id: `task-${Date.now()}`,
         title: titleInput.value,
         description: descriptionInput.value,
-        deadline: deadlineInput.value
+        deadline: deadlineInput.value,
+        isDone: false
     });
 }
-function renderTasks(arr) {
+function renderTasks() {
     tasksContainer.innerHTML = ``;
+    const arr = filteredArr ? filteredArr : tasksArr;
     arr.forEach((item) => {
         tasksContainer.innerHTML += `
     <div class="bg-white rounded-xl border border-gray-200 p-2 shadow-lg relative bg" id="${item.id}">
@@ -45,7 +50,8 @@ function renderTasks(arr) {
 function deleteTask(buttonEl) {
     let deleteTaskIndex = tasksArr.findIndex(item => item.id === buttonEl.parentElement.parentElement.id);
     tasksArr.splice(deleteTaskIndex, 1);
-    renderTasks(tasksArr);
+    filteredArr.splice(deleteTaskIndex, 1);
+    renderTasks();
 }
 function doneTask(buttonEl) {
     const taskContainer = buttonEl.parentElement.parentElement;
@@ -60,9 +66,9 @@ function editTask(buttonEl) {
     const taskTitle = task.querySelector(".title-task");
     const taskDescription = task.querySelector(".description");
     const taskDeadline = task.querySelector(".deadline");
-    taskTitle.innerHTML = `<input type="text" class = "w-full rounded-lg border border-gray-200 shadow-lg p-1" value="${taskTitle.innerText}">`;
-    taskDescription.innerHTML = `<textarea class="w-full rounded-lg border border-gray-200 shadow-lg p-1">${taskDescription.innerText}</textarea>`;
-    taskDeadline.innerHTML = `<input type="date" class="w-full rounded-lg border border-gray-200 shadow-lg p-1" value="${taskDeadline.innerText}">`;
+    taskTitle.innerHTML = `<input type="text" class = "w-full rounded-lg border border-gray-200 shadow-lg p-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="${taskTitle.innerText}">`;
+    taskDescription.innerHTML = `<textarea class="w-full rounded-lg border border-gray-200 shadow-lg p-1 focus:outline-none focus:ring-2 focus:ring-blue-500">${taskDescription.innerText}</textarea>`;
+    taskDeadline.innerHTML = `<input type="date" class="w-full rounded-lg border border-gray-200 shadow-lg p-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="${taskDeadline.innerText}">`;
     taskTitle.children[0].focus();
     taskButtons.innerHTML = `
             <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg" onclick="renderTasks()">Cancel</button>
@@ -78,22 +84,29 @@ function doneEditing(buttonEl) {
     tasksArr[editedTaskIndex].title = taskTitle.children[0].value;
     tasksArr[editedTaskIndex].description = taskDescription.children[0].value;
     tasksArr[editedTaskIndex].deadline = taskDeadline.children[0].value;
-    renderTasks(tasksArr);
+    renderTasks();
 }
 taskForm.addEventListener("submit", (e) => {
     e.preventDefault();
     addTask();
-    renderTasks(tasksArr);
+    renderTasks();
 });
 clearBtn.addEventListener("click", () => {
     tasksArr.length = 0;
-    renderTasks(tasksArr);
+    sortSelect.selectedIndex = 0;
+    searchInput.value = '';
+    renderTasks();
 });
 searchBtn.addEventListener("click", () => {
-    const filteredArr = tasksArr.filter(item => item.title.includes(searchInput.value));
-    if(filteredArr.length === 0){
+    filteredArr = tasksArr.filter(item => item.title.includes(searchInput.value) || item.description.includes(searchInput.value) || item.deadline.includes(searchInput.value));
+    if (filteredArr.length === 0) {
         tasksContainer.innerHTML = `<h2>Nothing found<h2>`;
-    }else{
-        renderTasks(filteredArr);
+    } else {
+        renderTasks();
     }
+});
+cancelSearchBtn.addEventListener("click", () => {
+    searchInput.value = '';
+    filteredArr.length = 0;
+    renderTasks();
 });
