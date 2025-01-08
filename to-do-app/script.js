@@ -50,10 +50,10 @@ function renderTasks(arr) {
 }
 function deleteTask(buttonEl) {
     let deleteTaskIndex = tasksArr.findIndex(item => item.id === buttonEl.parentElement.parentElement.id);
+    let filteredDeleteTaskIndex = filteredArr.findIndex(item => item.id === buttonEl.parentElement.parentElement.id);
     tasksArr.splice(deleteTaskIndex, 1);
-    filteredArr.splice(deleteTaskIndex, 1);
-    searchInput.value = '';
-    renderTasks(tasksArr);
+    filteredArr.splice(filteredDeleteTaskIndex, 1);
+    renderTasks(filteredArr.length === 0 ? tasksArr : filteredArr);
 }
 function doneTask(buttonEl) {
     const task = buttonEl.parentElement.parentElement;
@@ -90,8 +90,7 @@ function doneEditing(buttonEl) {
 taskForm.addEventListener("submit", (e) => {
     e.preventDefault();
     addTask();
-    renderTasks(tasksArr);
-    searchInput.value = '';
+    renderTasks(filteredArr.length === 0 ? tasksArr : filteredArr);
 });
 clearBtn.addEventListener("click", () => {
     tasksArr.length = 0;
@@ -114,4 +113,20 @@ cancelSearchBtn.addEventListener("click", () => {
     searchInput.value = '';
     filteredArr.length = 0;
     renderTasks(tasksArr);
+});
+sortSelect.addEventListener("change", (event) => {
+    let sortedArr = [];
+    switch (event.target.value) {
+        case "title":
+            sortedArr = [...tasksArr].sort((a, b) => a.title.localeCompare(b.title));
+            break;
+        case "deadline":
+            sortedArr = [...tasksArr].sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+            break;
+        case "reset":
+            sortedArr = tasksArr;
+            sortSelect.selectedIndex = 0;
+            break;
+    }
+    renderTasks(filteredArr.length === 0 ? sortedArr : filteredArr);
 });
