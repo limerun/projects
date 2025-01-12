@@ -38,9 +38,9 @@ function renderTasks(arr) {
         <p class="mt-1 break-words description">${item.description}</p>
         <p class="mt-1 break-words deadline">${item.deadline}</p>
         <div class="flex justify-evenly mt-2">
-            <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg" onclick="deleteTask(this)">Delete</button>
-            <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg" onclick="editTask(this)">Edit</button>
-            <button class="rounded-lg ${item.isDone ? "bg-gray-100 text-black" : "bg-blue-500 text-white"} w-20 shadow-lg" onclick="doneTask(this)">${item.isDone ? "Not Done" : "Done"}</button>
+            <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg delete-button">Delete</button>
+            <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg edit-button">Edit</button>
+            <button class="rounded-lg done-button ${item.isDone ? "bg-gray-100 text-black" : "bg-blue-500 text-white"} w-20 shadow-lg">${item.isDone ? "Not Done" : "Done"}</button>
         </div>
     </div>`;
     });
@@ -72,8 +72,8 @@ function editTask(buttonEl) {
     taskDeadline.innerHTML = `<input type="date" class="w-full rounded-lg border border-gray-200 shadow-lg p-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="${taskDeadline.innerText}">`;
     taskTitle.children[0].focus();
     taskButtons.innerHTML = `
-            <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg" onclick="renderTasks(filteredArr.length === 0 ? tasksArr : filteredArr)">Cancel</button>
-            <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg" onclick="doneEditing(this)">Edit</button>
+            <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg cancel-button">Cancel</button>
+            <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg done-edit-button">Edit</button>
     `;
 }
 function doneEditing(buttonEl) {
@@ -87,22 +87,52 @@ function doneEditing(buttonEl) {
     tasksArr[editedTaskIndex].deadline = taskDeadline.children[0].value;
     renderTasks(filteredArr.length === 0 ? tasksArr : filteredArr);
 }
+function clearTasks() {
+    tasksArr.length = 0;
+    sortSelect.selectedIndex = 0;
+    searchInput.value = '';
+}
+function search() {
+    filteredArr = tasksArr.filter(item =>
+        item.title.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+        item.description.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+        item.deadline.includes(searchInput.value));
+}
+function sortArr(value) {
+    switch (value) {
+        case "title":
+            return [...tasksArr].sort((a, b) => a.title.localeCompare(b.title));
+        case "deadline":
+            return [...tasksArr].sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+        case "reset":
+            sortSelect.selectedIndex = 0;
+            return tasksArr;
+    }
+}
 taskForm.addEventListener("submit", (e) => {
     e.preventDefault();
     addTask();
     renderTasks(filteredArr.length === 0 ? tasksArr : filteredArr);
 });
 clearBtn.addEventListener("click", () => {
-    tasksArr.length = 0;
-    sortSelect.selectedIndex = 0;
-    searchInput.value = '';
+    clearTasks();
     renderTasks(tasksArr);
 });
+tasksContainer.addEventListener("click", (e) => {
+    if (e.target.classList.contains("delete-button")) {
+        deleteTask(e.target);
+    } else if (e.target.classList.contains("edit-button")) {
+        editTask(e.target);
+    } else if (e.target.classList.contains("done-button")) {
+        doneTask(e.target);
+    } else if (e.target.classList.contains("cancel-button")) {
+        renderTasks(filteredArr.length === 0 ? tasksArr : filteredArr);
+    } else if (e.target.classList.contains("done-edit-button")) {
+        doneEditing(e.target);
+    }
+});
 searchBtn.addEventListener("click", () => {
-    filteredArr = tasksArr.filter(item =>
-        item.title.toLowerCase().includes(searchInput.value.toLowerCase()) ||
-        item.description.toLowerCase().includes(searchInput.value.toLowerCase()) ||
-        item.deadline.includes(searchInput.value));
+    search();
     if (filteredArr.length === 0) {
         tasksContainer.innerHTML = `<h2>Nothing found</h2>`;
     } else {
@@ -114,19 +144,6 @@ cancelSearchBtn.addEventListener("click", () => {
     filteredArr.length = 0;
     renderTasks(tasksArr);
 });
-sortSelect.addEventListener("change", (event) => {
-    let sortedArr = [];
-    switch (event.target.value) {
-        case "title":
-            sortedArr = [...tasksArr].sort((a, b) => a.title.localeCompare(b.title));
-            break;
-        case "deadline":
-            sortedArr = [...tasksArr].sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
-            break;
-        case "reset":
-            sortedArr = tasksArr;
-            sortSelect.selectedIndex = 0;
-            break;
-    }
-    renderTasks(filteredArr.length === 0 ? sortedArr : filteredArr);
+sortSelect.addEventListener("change", (e) => {
+    renderTasks(filteredArr.length === 0 ? sortArr(e.target.value) : filteredArr);
 });
