@@ -11,7 +11,8 @@ const searchBtn = document.getElementById("search-button");
 const sortSelect = document.getElementById("sort-select");
 const cancelSearchBtn = document.getElementById("cancel-search-button");
 const tasksArr = [];
-let filteredArr = [];
+let renderedArr = [];
+let searchedArr = [];
 function validation(inp) {
     return inp.replace(/[<>]/g, '');
 }
@@ -50,16 +51,16 @@ function renderTasks(arr) {
 }
 function deleteTask(buttonEl) {
     let deleteTaskIndex = tasksArr.findIndex(item => item.id === buttonEl.parentElement.parentElement.id);
-    let filteredDeleteTaskIndex = filteredArr.findIndex(item => item.id === buttonEl.parentElement.parentElement.id);
+    let renderedDeleteTaskIndex = renderedArr.findIndex(item => item.id === buttonEl.parentElement.parentElement.id);
     tasksArr.splice(deleteTaskIndex, 1);
-    filteredArr.splice(filteredDeleteTaskIndex, 1);
-    renderTasks(filteredArr.length === 0 ? tasksArr : filteredArr);
+    renderedArr.splice(renderedDeleteTaskIndex, 1);
+    renderTasks(renderedArr.length === 0 ? tasksArr : renderedArr);
 }
 function doneTask(buttonEl) {
     const task = buttonEl.parentElement.parentElement;
     let doneTaskIndex = tasksArr.findIndex(item => item.id === task.id);
     tasksArr[doneTaskIndex].isDone = !tasksArr[doneTaskIndex].isDone;
-    renderTasks(filteredArr.length === 0 ? tasksArr : filteredArr);
+    renderTasks(renderedArr.length === 0 ? tasksArr : renderedArr);
 }
 function editTask(buttonEl) {
     const task = buttonEl.parentElement.parentElement;
@@ -85,7 +86,7 @@ function doneEditing(buttonEl) {
     tasksArr[editedTaskIndex].title = taskTitle.children[0].value;
     tasksArr[editedTaskIndex].description = taskDescription.children[0].value;
     tasksArr[editedTaskIndex].deadline = taskDeadline.children[0].value;
-    renderTasks(filteredArr.length === 0 ? tasksArr : filteredArr);
+    renderTasks(renderedArr.length === 0 ? tasksArr : renderedArr);
 }
 function clearTasks() {
     tasksArr.length = 0;
@@ -93,26 +94,31 @@ function clearTasks() {
     searchInput.value = '';
 }
 function search() {
-    filteredArr = tasksArr.filter(item =>
+    renderedArr = tasksArr.filter(item =>
         item.title.toLowerCase().includes(searchInput.value.toLowerCase()) ||
         item.description.toLowerCase().includes(searchInput.value.toLowerCase()) ||
         item.deadline.includes(searchInput.value));
+    searchedArr = [...renderedArr];
 }
 function sortArr(value) {
+    let arr = renderedArr.length === 0 ? tasksArr : renderedArr;
     switch (value) {
         case "title":
-            return [...tasksArr].sort((a, b) => a.title.localeCompare(b.title));
+            renderedArr = [...arr].sort((a, b) => a.title.localeCompare(b.title));
+            break;
         case "deadline":
-            return [...tasksArr].sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+            renderedArr = [...arr].sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+            break;
         case "reset":
+            renderedArr = [...searchedArr];
             sortSelect.selectedIndex = 0;
-            return tasksArr;
+            break;
     }
 }
 taskForm.addEventListener("submit", (e) => {
     e.preventDefault();
     addTask();
-    renderTasks(filteredArr.length === 0 ? tasksArr : filteredArr);
+    renderTasks(renderedArr.length === 0 ? tasksArr : renderedArr);
 });
 clearBtn.addEventListener("click", () => {
     clearTasks();
@@ -126,24 +132,27 @@ tasksContainer.addEventListener("click", (e) => {
     } else if (e.target.classList.contains("done-button")) {
         doneTask(e.target);
     } else if (e.target.classList.contains("cancel-button")) {
-        renderTasks(filteredArr.length === 0 ? tasksArr : filteredArr);
+        renderTasks(renderedArr.length === 0 ? tasksArr : renderedArr);
     } else if (e.target.classList.contains("done-edit-button")) {
         doneEditing(e.target);
     }
 });
 searchBtn.addEventListener("click", () => {
     search();
-    if (filteredArr.length === 0) {
+    if (renderedArr.length === 0) {
         tasksContainer.innerHTML = `<h2>Nothing found</h2>`;
     } else {
-        renderTasks(filteredArr);
+        renderTasks(renderedArr);
     }
 });
 cancelSearchBtn.addEventListener("click", () => {
     searchInput.value = '';
-    filteredArr.length = 0;
+    renderedArr.length = 0;
+    searchedArr.length = 0;
+    sortSelect.selectedIndex = 0;
     renderTasks(tasksArr);
 });
 sortSelect.addEventListener("change", (e) => {
-    renderTasks(filteredArr.length === 0 ? sortArr(e.target.value) : filteredArr);
+    sortArr(e.target.value);
+    renderTasks(renderedArr.length === 0 ? tasksArr : renderedArr);
 });
