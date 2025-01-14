@@ -10,7 +10,7 @@ const searchInput = document.getElementById("search-input");
 const searchBtn = document.getElementById("search-button");
 const sortSelect = document.getElementById("sort-select");
 const cancelSearchBtn = document.getElementById("cancel-search-button");
-const tasksArr = [];
+let tasksArr = [];
 let renderedArr = [];
 let searchedArr = [];
 function validation(inp) {
@@ -30,6 +30,10 @@ function addTask() {
     });
 }
 function renderTasks(arr) {
+    if (arr.length === 0) {
+        tasksContainer.innerHTML = `<h2 class="text-gray-500">No tasks to display.</h2>`;
+        return;
+    }
     tasksContainer.innerHTML = ``;
     arr.forEach((item) => {
         tasksContainer.innerHTML += `
@@ -89,7 +93,8 @@ function doneEditing(buttonEl) {
     renderTasks(renderedArr.length === 0 ? tasksArr : renderedArr);
 }
 function clearTasks() {
-    tasksArr.length = 0;
+    tasksArr = tasksArr.filter(item => !renderedArr.includes(item));
+    (renderedArr.length === 0 ? tasksArr : renderedArr).length = 0;
     sortSelect.selectedIndex = 0;
     searchInput.value = '';
 }
