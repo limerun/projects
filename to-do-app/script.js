@@ -16,18 +16,51 @@ let searchedArr = [];
 function validation(inp) {
     return inp.replace(/[<>]/g, '');
 }
+class Task {
+    constructor(title, description, deadline) {
+        this.id = `task-${Date.now()}`;
+        this.title = title;
+        this.description = description;
+        this.deadline = deadline;
+        this.isDone = false;
+    }
+    doneTask() {
+        this.isDone = !this.isDone;
+        renderTasks(renderedArr.length === 0 ? tasksArr : renderedArr);
+    }
+    editTask(task) {
+        // const task = buttonEl.parentElement.parentElement;
+        const taskButtons = task.querySelector(".task-buttons");
+        const taskTitle = task.querySelector(".title-task");
+        const taskDescription = task.querySelector(".description");
+        const taskDeadline = task.querySelector(".deadline");
+        taskTitle.innerHTML = `<input type="text" class = "w-full rounded-lg border border-gray-200 shadow-lg p-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="${taskTitle.innerText}">`;
+        taskDescription.innerHTML = `<textarea class="w-full rounded-lg border border-gray-200 shadow-lg p-1 focus:outline-none focus:ring-2 focus:ring-blue-500">${taskDescription.innerText}</textarea>`;
+        taskDeadline.innerHTML = `<input type="date" class="w-full rounded-lg border border-gray-200 shadow-lg p-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="${taskDeadline.innerText}">`;
+        taskTitle.children[0].focus();
+        taskButtons.innerHTML = `
+                <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg cancel-button">Cancel</button>
+                <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg done-edit-button">Edit</button>
+        `;
+    }
+    // doneEditing(buttonEl) {
+    //     const task = buttonEl.parentElement.parentElement;
+    //     let editedTaskIndex = tasksArr.findIndex(item => item.id === task.id);
+    //     const taskTitle = task.querySelector(".title-task");
+    //     const taskDescription = task.querySelector(".description");
+    //     const taskDeadline = task.querySelector(".deadline");
+    //     tasksArr[editedTaskIndex].title = taskTitle.children[0].value;
+    //     tasksArr[editedTaskIndex].description = taskDescription.children[0].value;
+    //     tasksArr[editedTaskIndex].deadline = taskDeadline.children[0].value;
+    //     renderTasks(renderedArr.length === 0 ? tasksArr : renderedArr);
+    // }
+}
 function addTask() {
     if (titleInput.value.trim() === "") {
         alert("Enter a title");
         return;
     }
-    tasksArr.unshift({
-        id: `task-${Date.now()}`,
-        title: validation(titleInput.value),
-        description: validation(descriptionInput.value),
-        deadline: validation(deadlineInput.value),
-        isDone: false
-    });
+    tasksArr.unshift(new Task(validation(titleInput.value), validation(descriptionInput.value), validation(deadlineInput.value)));
 }
 function renderTasks(arr) {
     if (arr.length === 0) {
@@ -37,12 +70,12 @@ function renderTasks(arr) {
     tasksContainer.innerHTML = ``;
     arr.forEach((item) => {
         tasksContainer.innerHTML += `
-    <div class="bg-white rounded-xl border border-gray-200 p-2 shadow-lg relative bg" id="${item.id}">
+    <div class="bg-white rounded-xl border border-gray-200 p-2 shadow-lg relative bg task" id="${item.id}">
         <p class="absolute right-1 top-1 text-xs ${item.isDone ? "" : "hidden"}">Done</p>
         <h2 class="text-xl pr-6 break-words title-task">${item.title}</h2>
         <p class="mt-1 break-words description">${item.description}</p>
         <p class="mt-1 break-words deadline">${item.deadline}</p>
-        <div class="flex justify-evenly mt-2">
+        <div class="flex justify-evenly mt-2 task-buttons">
             <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg delete-button">Delete</button>
             <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg edit-button">Edit</button>
             <button class="rounded-lg done-button ${item.isDone ? "bg-gray-100 text-black" : "bg-blue-500 text-white"} w-20 shadow-lg">${item.isDone ? "Not Done" : "Done"}</button>
@@ -60,27 +93,21 @@ function deleteTask(buttonEl) {
     renderedArr.splice(renderedDeleteTaskIndex, 1);
     renderTasks(renderedArr.length === 0 ? tasksArr : renderedArr);
 }
-function doneTask(buttonEl) {
-    const task = buttonEl.parentElement.parentElement;
-    let doneTaskIndex = tasksArr.findIndex(item => item.id === task.id);
-    tasksArr[doneTaskIndex].isDone = !tasksArr[doneTaskIndex].isDone;
-    renderTasks(renderedArr.length === 0 ? tasksArr : renderedArr);
-}
-function editTask(buttonEl) {
-    const task = buttonEl.parentElement.parentElement;
-    const taskButtons = buttonEl.parentElement;
-    const taskTitle = task.querySelector(".title-task");
-    const taskDescription = task.querySelector(".description");
-    const taskDeadline = task.querySelector(".deadline");
-    taskTitle.innerHTML = `<input type="text" class = "w-full rounded-lg border border-gray-200 shadow-lg p-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="${taskTitle.innerText}">`;
-    taskDescription.innerHTML = `<textarea class="w-full rounded-lg border border-gray-200 shadow-lg p-1 focus:outline-none focus:ring-2 focus:ring-blue-500">${taskDescription.innerText}</textarea>`;
-    taskDeadline.innerHTML = `<input type="date" class="w-full rounded-lg border border-gray-200 shadow-lg p-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="${taskDeadline.innerText}">`;
-    taskTitle.children[0].focus();
-    taskButtons.innerHTML = `
-            <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg cancel-button">Cancel</button>
-            <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg done-edit-button">Edit</button>
-    `;
-}
+// function editTask(buttonEl) {
+//     const task = buttonEl.parentElement.parentElement;
+//     const taskButtons = buttonEl.parentElement;
+//     const taskTitle = task.querySelector(".title-task");
+//     const taskDescription = task.querySelector(".description");
+//     const taskDeadline = task.querySelector(".deadline");
+//     taskTitle.innerHTML = `<input type="text" class = "w-full rounded-lg border border-gray-200 shadow-lg p-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="${taskTitle.innerText}">`;
+//     taskDescription.innerHTML = `<textarea class="w-full rounded-lg border border-gray-200 shadow-lg p-1 focus:outline-none focus:ring-2 focus:ring-blue-500">${taskDescription.innerText}</textarea>`;
+//     taskDeadline.innerHTML = `<input type="date" class="w-full rounded-lg border border-gray-200 shadow-lg p-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="${taskDeadline.innerText}">`;
+//     taskTitle.children[0].focus();
+//     taskButtons.innerHTML = `
+//             <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg cancel-button">Cancel</button>
+//             <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg done-edit-button">Edit</button>
+//     `;
+// }
 function doneEditing(buttonEl) {
     const task = buttonEl.parentElement.parentElement;
     let editedTaskIndex = tasksArr.findIndex(item => item.id === task.id);
@@ -130,12 +157,14 @@ clearBtn.addEventListener("click", () => {
     renderTasks(tasksArr);
 });
 tasksContainer.addEventListener("click", (e) => {
+    let task = e.target.closest(".task");
+    let doneTaskIndex = tasksArr.findIndex(item => item.id === task.id);
     if (e.target.classList.contains("delete-button")) {
         deleteTask(e.target);
     } else if (e.target.classList.contains("edit-button")) {
-        editTask(e.target);
+        editTask(task);
     } else if (e.target.classList.contains("done-button")) {
-        doneTask(e.target);
+        tasksArr[doneTaskIndex].doneTask();
     } else if (e.target.classList.contains("cancel-button")) {
         renderTasks(renderedArr.length === 0 ? tasksArr : renderedArr);
     } else if (e.target.classList.contains("done-edit-button")) {
