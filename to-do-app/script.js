@@ -29,7 +29,6 @@ class Task {
         renderTasks(renderedArr.length === 0 ? tasksArr : renderedArr);
     }
     editTask(task) {
-        // const task = buttonEl.parentElement.parentElement;
         const taskButtons = task.querySelector(".task-buttons");
         const taskTitle = task.querySelector(".title-task");
         const taskDescription = task.querySelector(".description");
@@ -43,17 +42,25 @@ class Task {
                 <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg done-edit-button">Edit</button>
         `;
     }
-    // doneEditing(buttonEl) {
-    //     const task = buttonEl.parentElement.parentElement;
-    //     let editedTaskIndex = tasksArr.findIndex(item => item.id === task.id);
-    //     const taskTitle = task.querySelector(".title-task");
-    //     const taskDescription = task.querySelector(".description");
-    //     const taskDeadline = task.querySelector(".deadline");
-    //     tasksArr[editedTaskIndex].title = taskTitle.children[0].value;
-    //     tasksArr[editedTaskIndex].description = taskDescription.children[0].value;
-    //     tasksArr[editedTaskIndex].deadline = taskDeadline.children[0].value;
-    //     renderTasks(renderedArr.length === 0 ? tasksArr : renderedArr);
-    // }
+    doneEditing(task) {
+        const taskTitle = task.querySelector(".title-task");
+        const taskDescription = task.querySelector(".description");
+        const taskDeadline = task.querySelector(".deadline");
+        this.title = validation(taskTitle.children[0].value);
+        this.description = validation(taskDescription.children[0].value);
+        this.deadline = validation(taskDeadline.children[0].value);
+        renderTasks(renderedArr.length === 0 ? tasksArr : renderedArr);
+    }
+    deleteTask() {
+        let deleteTaskIndex = tasksArr.findIndex(item => item === this);
+        let renderedDeleteTaskIndex = renderedArr.findIndex(item => item === this);
+        let searchedDeleteTaskIndex = searchedArr.findIndex(item => item === this);
+        tasksArr.splice(deleteTaskIndex, 1);
+        renderedArr.splice(renderedDeleteTaskIndex, 1);
+        searchedArr.splice(searchedDeleteTaskIndex, 1);
+        renderedArr.length === 0 && (searchInput.value = "");
+        renderTasks(renderedArr.length === 0 ? tasksArr : renderedArr);
+    }
 }
 function addTask() {
     if (titleInput.value.trim() === "") {
@@ -86,44 +93,11 @@ function renderTasks(arr) {
     descriptionInput.value = '';
     deadlineInput.value = '';
 }
-function deleteTask(buttonEl) {
-    let deleteTaskIndex = tasksArr.findIndex(item => item.id === buttonEl.parentElement.parentElement.id);
-    let renderedDeleteTaskIndex = renderedArr.findIndex(item => item.id === buttonEl.parentElement.parentElement.id);
-    tasksArr.splice(deleteTaskIndex, 1);
-    renderedArr.splice(renderedDeleteTaskIndex, 1);
-    renderTasks(renderedArr.length === 0 ? tasksArr : renderedArr);
-}
-// function editTask(buttonEl) {
-//     const task = buttonEl.parentElement.parentElement;
-//     const taskButtons = buttonEl.parentElement;
-//     const taskTitle = task.querySelector(".title-task");
-//     const taskDescription = task.querySelector(".description");
-//     const taskDeadline = task.querySelector(".deadline");
-//     taskTitle.innerHTML = `<input type="text" class = "w-full rounded-lg border border-gray-200 shadow-lg p-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="${taskTitle.innerText}">`;
-//     taskDescription.innerHTML = `<textarea class="w-full rounded-lg border border-gray-200 shadow-lg p-1 focus:outline-none focus:ring-2 focus:ring-blue-500">${taskDescription.innerText}</textarea>`;
-//     taskDeadline.innerHTML = `<input type="date" class="w-full rounded-lg border border-gray-200 shadow-lg p-1 focus:outline-none focus:ring-2 focus:ring-blue-500" value="${taskDeadline.innerText}">`;
-//     taskTitle.children[0].focus();
-//     taskButtons.innerHTML = `
-//             <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg cancel-button">Cancel</button>
-//             <button class="rounded-lg bg-blue-500 w-20 text-white shadow-lg done-edit-button">Edit</button>
-//     `;
-// }
-function doneEditing(buttonEl) {
-    const task = buttonEl.parentElement.parentElement;
-    let editedTaskIndex = tasksArr.findIndex(item => item.id === task.id);
-    const taskTitle = task.querySelector(".title-task");
-    const taskDescription = task.querySelector(".description");
-    const taskDeadline = task.querySelector(".deadline");
-    tasksArr[editedTaskIndex].title = taskTitle.children[0].value;
-    tasksArr[editedTaskIndex].description = taskDescription.children[0].value;
-    tasksArr[editedTaskIndex].deadline = taskDeadline.children[0].value;
-    renderTasks(renderedArr.length === 0 ? tasksArr : renderedArr);
-}
 function clearTasks() {
     tasksArr = tasksArr.filter(item => !renderedArr.includes(item));
     (renderedArr.length === 0 ? tasksArr : renderedArr).length = 0;
     sortSelect.selectedIndex = 0;
-    searchInput.value = '';
+    searchInput.value = "";
 }
 function search() {
     renderedArr = tasksArr.filter(item =>
@@ -158,17 +132,17 @@ clearBtn.addEventListener("click", () => {
 });
 tasksContainer.addEventListener("click", (e) => {
     let task = e.target.closest(".task");
-    let doneTaskIndex = tasksArr.findIndex(item => item.id === task.id);
+    let triggeredTaskIndex = tasksArr.findIndex(item => item.id === task.id);
     if (e.target.classList.contains("delete-button")) {
-        deleteTask(e.target);
+        tasksArr[triggeredTaskIndex].deleteTask();
     } else if (e.target.classList.contains("edit-button")) {
-        editTask(task);
+        tasksArr[triggeredTaskIndex].editTask(task);
     } else if (e.target.classList.contains("done-button")) {
-        tasksArr[doneTaskIndex].doneTask();
+        tasksArr[triggeredTaskIndex].doneTask();
     } else if (e.target.classList.contains("cancel-button")) {
         renderTasks(renderedArr.length === 0 ? tasksArr : renderedArr);
     } else if (e.target.classList.contains("done-edit-button")) {
-        doneEditing(e.target);
+        tasksArr[triggeredTaskIndex].doneEditing(task);
     }
 });
 searchBtn.addEventListener("click", () => {
