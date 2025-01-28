@@ -10,12 +10,6 @@ const searchInput = document.getElementById("search-input");
 const searchBtn = document.getElementById("search-button");
 const sortSelect = document.getElementById("sort-select");
 const cancelSearchBtn = document.getElementById("cancel-search-button");
-let tasksArr = [];
-let renderedArr = [];
-let searchedArr = [];
-function validation(inp) {
-    return inp.replace(/[<>]/g, '');
-}
 class Task {
     constructor(title, description, deadline) {
         this.id = `task-${Date.now()}`;
@@ -24,9 +18,18 @@ class Task {
         this.deadline = deadline;
         this.isDone = false;
     }
-    doneTask() {
+    doneTask(task) {
         this.isDone = !this.isDone;
-        renderTasks(renderedArr.length === 0 ? tasksArr : renderedArr);
+        localStorage.setItem("data", JSON.stringify(tasksArr));
+        const taskElement = document.getElementById(this.id);
+        const doneIndicator = taskElement.querySelector('.absolute.right-1.top-1.text-xs');
+        const doneButton = taskElement.querySelector('.done-button');
+        doneIndicator.classList.toggle('hidden', !this.isDone);
+        doneButton.classList.toggle('bg-gray-100', this.isDone);
+        doneButton.classList.toggle('text-black', this.isDone);
+        doneButton.classList.toggle('bg-blue-500', !this.isDone);
+        doneButton.classList.toggle('text-white', !this.isDone);
+        doneButton.textContent = this.isDone ? 'Not Done' : 'Done';
     }
     editTask(task) {
         const taskButtons = task.querySelector(".task-buttons");
@@ -62,6 +65,17 @@ class Task {
         renderTasks(renderedArr.length === 0 ? tasksArr : renderedArr);
     }
 }
+let tasksArr = JSON.parse(localStorage.getItem("data"))?.map(task => new Task(task.title, task.description, task.deadline)) || [];
+tasksArr.forEach((task, index) => {
+    task.id = JSON.parse(localStorage.getItem("data"))[index].id;
+    task.isDone = JSON.parse(localStorage.getItem("data"))[index].isDone;
+});
+let renderedArr = [];
+let searchedArr = [];
+renderTasks(tasksArr);
+function validation(inp) {
+    return inp.replace(/[<>]/g, '');
+}
 function addTask() {
     if (titleInput.value.trim() === "") {
         alert("Enter a title");
@@ -70,6 +84,7 @@ function addTask() {
     tasksArr.unshift(new Task(validation(titleInput.value), validation(descriptionInput.value), validation(deadlineInput.value)));
 }
 function renderTasks(arr) {
+    localStorage.setItem("data", JSON.stringify(tasksArr));
     if (arr.length === 0) {
         tasksContainer.innerHTML = `<h2 class="text-gray-500">No tasks to display.</h2>`;
         return;
@@ -78,7 +93,7 @@ function renderTasks(arr) {
     arr.forEach((item) => {
         tasksContainer.innerHTML += `
     <div class="bg-white rounded-xl border border-gray-200 p-2 shadow-lg relative bg task" id="${item.id}">
-        <p class="absolute right-1 top-1 text-xs ${item.isDone ? "" : "hidden"}">Done</p>
+        <p class="absolute right-1 top-1 text-xs indicator ${item.isDone ? "" : "hidden"}">Done</p>
         <h2 class="text-xl pr-6 break-words title-task">${item.title}</h2>
         <p class="mt-1 break-words description">${item.description}</p>
         <p class="mt-1 break-words deadline">${item.deadline}</p>
@@ -138,7 +153,7 @@ tasksContainer.addEventListener("click", (e) => {
     } else if (e.target.classList.contains("edit-button")) {
         tasksArr[triggeredTaskIndex].editTask(task);
     } else if (e.target.classList.contains("done-button")) {
-        tasksArr[triggeredTaskIndex].doneTask();
+        tasksArr[triggeredTaskIndex].doneTask(task);
     } else if (e.target.classList.contains("cancel-button")) {
         renderTasks(renderedArr.length === 0 ? tasksArr : renderedArr);
     } else if (e.target.classList.contains("done-edit-button")) {
