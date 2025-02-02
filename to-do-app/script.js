@@ -120,6 +120,11 @@ function search() {
         item.description.toLowerCase().includes(searchInput.value.toLowerCase()) ||
         item.deadline.includes(searchInput.value));
     searchedArr = [...renderedArr];
+    if (renderedArr.length === 0) {
+        tasksContainer.innerHTML = `<h2>Nothing found</h2>`;
+    } else {
+        renderTasks(renderedArr);
+    }
 }
 function sortArr(value) {
     let arr = renderedArr.length === 0 ? tasksArr : renderedArr;
@@ -160,13 +165,11 @@ tasksContainer.addEventListener("click", (e) => {
         tasksArr[triggeredTaskIndex].doneEditing(task);
     }
 });
+searchInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") search();
+});
 searchBtn.addEventListener("click", () => {
     search();
-    if (renderedArr.length === 0) {
-        tasksContainer.innerHTML = `<h2>Nothing found</h2>`;
-    } else {
-        renderTasks(renderedArr);
-    }
 });
 cancelSearchBtn.addEventListener("click", () => {
     searchInput.value = '';
