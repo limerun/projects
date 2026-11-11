@@ -13,6 +13,23 @@ let tasksArr = [];
 let renderedArr = [];
 let searchValue = "";
 let sortValue = "reset";
+function loadTasks() {
+    try {
+        const savedTasks = JSON.parse(localStorage.getItem("todoTasks"));
+        if (Array.isArray(savedTasks)) {
+            tasksArr = savedTasks;
+        }
+    } catch {
+        console.warn("Could not load saved tasks.");
+    }
+}
+function saveTasks() {
+    try {
+        localStorage.setItem("todoTasks", JSON.stringify(tasksArr));
+    } catch {
+        console.warn("Could not save tasks.");
+    }
+}
 function validTitle(value) {
     if (value.trim() === "") {
         alert("Enter a title");
@@ -31,6 +48,7 @@ function addTask() {
         deadline: deadlineInput.value,
         isDone: false
     });
+    saveTasks();
     taskForm.reset();
 }
 function renderTasks() {
@@ -76,12 +94,14 @@ function renderTasks() {
 function deleteTask(buttonEl) {
     let deleteTaskIndex = tasksArr.findIndex(item => item.id === buttonEl.parentElement.parentElement.id);
     tasksArr.splice(deleteTaskIndex, 1);
+    saveTasks();
     renderTasks();
 }
 function doneTask(buttonEl) {
     const task = buttonEl.parentElement.parentElement;
     let doneTaskIndex = tasksArr.findIndex(item => item.id === task.id);
     tasksArr[doneTaskIndex].isDone = !tasksArr[doneTaskIndex].isDone;
+    saveTasks();
     renderTasks();
 }
 function editTask(buttonEl) {
@@ -115,10 +135,12 @@ function doneEditing(buttonEl) {
     tasksArr[editedTaskIndex].title = taskTitle.children[0].value.trim();
     tasksArr[editedTaskIndex].description = taskDescription.children[0].value;
     tasksArr[editedTaskIndex].deadline = taskDeadline.children[0].value;
+    saveTasks();
     renderTasks();
 }
 function clearTasks() {
     tasksArr = tasksArr.filter(item => !renderedArr.includes(item));
+    saveTasks();
 }
 function search() {
     searchValue = searchInput.value.trim().toLowerCase();
@@ -160,4 +182,5 @@ sortSelect.addEventListener("change", (e) => {
     sortValue = e.target.value;
     renderTasks();
 });
+loadTasks();
 renderTasks();

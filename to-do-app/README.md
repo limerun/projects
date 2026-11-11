@@ -8,6 +8,7 @@ A small project I made to practise JavaScript, DOM manipulation and event listen
 
 - Add tasks with a title, description and optional deadline.
 - Edit, delete and mark tasks as done.
+- Save tasks in localStorage so they stay after refreshing or reopening the page in the same browser.
 - Search by title, description or deadline. Click Search to apply the search.
 - Sort by title or deadline. Tasks without a deadline go last when sorting by deadline.
 - Reset sorting to show tasks in their original order, with the newest first.
@@ -27,14 +28,6 @@ The page uses Tailwind CSS through a CDN, so an internet connection is needed fo
 - HTML
 - Tailwind CSS
 
-## Limitations
-
-- Tasks are stored only in memory and disappear when the page is refreshed or closed.
-- There is no backend, account system or synchronisation between devices.
-- The layout is mainly designed for a desktop screen.
-- Sorting, searching or changing another task redraws the list, so unfinished edits are discarded.
-
 ## Things to improve later
 
-- Save tasks in localStorage.
 - Improve the layout on small screens.
